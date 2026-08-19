@@ -27,6 +27,8 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+AI_LOG.md
+PROMPTS.md
 manual.txt
 
 # OS & Editor files

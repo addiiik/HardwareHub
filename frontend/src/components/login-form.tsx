@@ -7,23 +7,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import {
-  Field,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field"
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 
 import { useAuth } from "@/context/AuthContext"
-import {
-  loginSchema,
-  type LoginFormValues,
-} from "@/schemas/auth"
+import { loginSchema, type LoginFormValues } from "@/schemas/auth"
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentProps<"form">) {
+export function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
   const navigate = useNavigate()
   const { setUser } = useAuth()
 
