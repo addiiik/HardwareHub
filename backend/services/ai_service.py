@@ -61,6 +61,23 @@ def get_embedding(text: str) -> list[float]:
         print(f"Error getting embedding: {e}")
         return []
 
+def get_embeddings_batch(texts: list[str]) -> list[list[float]]:
+    """Generates embeddings for multiple text strings in a single Gemini API request."""
+    if not texts:
+        return []
+    try:
+        result = client.models.embed_content(
+            model="gemini-embedding-2",
+            contents=texts,
+            config=types.EmbedContentConfig(
+                task_type="SEMANTIC_SIMILARITY"
+            )
+        )
+        return [e.values for e in result.embeddings]
+    except Exception as e:
+        print(f"Error getting batch embeddings: {e}")
+        return [[] for _ in texts]
+
 def cosine_similarity(vec_a: list[float], vec_b: list[float]) -> float:
     a = np.array(vec_a)
     b = np.array(vec_b)
