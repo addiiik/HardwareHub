@@ -4,9 +4,9 @@ export const loginSchema = z.object({
   email: z
     .email("Please enter a valid email address")
     .refine(
-      (email) => email.endsWith("@booksy.com"),
+      (email) => email.endsWith("@company.com"),
       {
-        message: "You must use your @booksy.com email address",
+        message: "You must use your @company.com email address",
       }
     ),
 

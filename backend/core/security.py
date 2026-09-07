@@ -14,12 +14,18 @@ def verify_password(password: str, hashed: str) -> bool:
         hashed.encode('utf-8')
     )
 
-def create_access_token(data: dict) -> str:
+def create_access_token(
+    data: dict, 
+    expires_delta: timedelta | None = None,
+    is_indefinite: bool = False
+) -> str:
     payload = data.copy()
-    expire = datetime.now(timezone.utc) + timedelta(
-        minutes=ACCESS_TOKEN_EXPIRE_MINUTES
-    )
-    payload["exp"] = expire
+
+    if not is_indefinite:
+        if expires_delta is None:
+            expires_delta = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        expire = datetime.now(timezone.utc) + expires_delta
+        payload["exp"] = expire
 
     return jwt.encode(
         payload,

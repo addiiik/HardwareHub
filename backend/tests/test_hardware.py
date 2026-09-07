@@ -81,7 +81,7 @@ def test_add_note_to_hardware_success(client, db_session):
         id="test-user-id",
         first_name="Test",
         last_name="User",
-        email="test@booksy.com",
+        email="test@company.com",
         password="hashedpassword",
         role=models.RoleEnum.ADMIN
     )
@@ -103,7 +103,7 @@ def test_add_note_to_hardware_success(client, db_session):
     
     assert response.status_code == 201
     assert response.json()["content"] == payload["content"]
-    assert response.json()["author"]["email"] == "test@booksy.com"
+    assert response.json()["author"]["email"] == "test@company.com"
 
 def test_cannot_send_item_to_repair_while_in_use(client, db_session):
     in_use_item = models.HardwareItem(

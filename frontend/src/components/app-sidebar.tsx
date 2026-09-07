@@ -52,7 +52,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-default hover:bg-transparent">
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-transparent">
-                <img src="/booksy_small.svg" alt="Booksy Logo" className="size-6" />
+                <span>AK</span>
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">Hardware Hub</span>

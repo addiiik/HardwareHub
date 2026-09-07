@@ -13,6 +13,8 @@ import { Input } from "@/components/ui/input"
 import { useAuth } from "@/context/AuthContext"
 import { loginSchema, type LoginFormValues } from "@/schemas/auth"
 
+// UNUSED IN DEMO //
+
 export function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
   const navigate = useNavigate()
   const { setUser } = useAuth()
@@ -94,7 +96,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
           <Input
             id="email"
             type="email"
-            placeholder="name@booksy.com"
+            placeholder="name@company.com"
             {...register("email")}
           />
 

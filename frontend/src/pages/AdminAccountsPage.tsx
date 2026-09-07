@@ -20,6 +20,8 @@ import { UserCreationForm } from "@/components/user-creation-form"
 import { getUserColumns } from "@/components/columns/user-columns"
 import { UserItem } from "@/types/user"
 
+const IS_DEMO = import.meta.env.IS_DEMO === "true"
+
 export default function AdminAccountsPage() {
   const [data, setData] = useState<UserItem[]>([])
   const [loading, setLoading] = useState(true)
@@ -53,7 +55,7 @@ export default function AdminAccountsPage() {
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger 
         render={
-          <Button size="sm" className="h-9">
+          <Button size="sm" className="h-9" disabled={IS_DEMO}>
             <UserPlus className="mr-2 h-4 w-4" /> Add User
           </Button>
         }

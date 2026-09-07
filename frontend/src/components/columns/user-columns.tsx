@@ -14,6 +14,8 @@ import { MoreHorizontal, Trash } from "lucide-react"
 import { toast } from "sonner"
 import { UserItem } from "@/types/user"
 
+const IS_DEMO = import.meta.env.IS_DEMO === "true"
+
 export const getUserColumns = (onUserDeleted: () => void): ColumnDef<UserItem>[] => [
   { accessorKey: "first_name", header: "First Name" },
   { accessorKey: "last_name", header: "Last Name" },
@@ -63,7 +65,11 @@ export const getUserColumns = (onUserDeleted: () => void): ColumnDef<UserItem>[]
           <DropdownMenuContent align="end">
             <DropdownMenuGroup>
               <DropdownMenuLabel>Manage User</DropdownMenuLabel>
-              <DropdownMenuItem onClick={handleDelete} className="text-destructive focus:bg-destructive/10">
+              <DropdownMenuItem 
+                onClick={handleDelete} 
+                disabled={IS_DEMO}
+                className="text-destructive focus:bg-destructive/10"
+              >
                 <Trash className="mr-2 h-4 w-4" /> Remove User
               </DropdownMenuItem>
             </DropdownMenuGroup>

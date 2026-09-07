@@ -16,7 +16,7 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title="Booksy Hardware Hub", lifespan=lifespan)
+app = FastAPI(title="Hardware Hub", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

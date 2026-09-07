@@ -9,9 +9,9 @@ class LoginRequest(BaseModel):
 
     @field_validator('email')
     @classmethod
-    def validate_booksy_domain(cls, value: str) -> str:
-        if not value.endswith('@booksy.com'):
-            raise ValueError('You must use your @booksy.com email address')
+    def validate_company_domain(cls, value: str) -> str:
+        if not value.endswith('@company.com'):
+            raise ValueError('You must use your @company.com email address')
         return value
 
 class UserResponse(BaseModel):
@@ -112,9 +112,9 @@ class UserCreateRequest(BaseModel):
 
     @field_validator("email")
     @classmethod
-    def validate_booksy_domain(cls, value: str) -> str:
-        if not value.endswith("@booksy.com"):
-            raise ValueError("You must use your @booksy.com email address")
+    def validate_company_domain(cls, value: str) -> str:
+        if not value.endswith("@company.com"):
+            raise ValueError("You must use your @company.com email address")
         return value
 
 class HardwareCreateRequest(BaseModel):

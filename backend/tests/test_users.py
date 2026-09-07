@@ -4,7 +4,7 @@ def test_create_user_success(client):
     payload = {
         "first_name": "Alice",
         "last_name": "Smith",
-        "email": "alice.smith@booksy.com",
+        "email": "alice.smith@company.com",
         "password": "strongpassword123",
         "role": "employee"
     }
@@ -13,13 +13,13 @@ def test_create_user_success(client):
     
     assert response.status_code == 201
     assert response.json()["first_name"] == "Alice"
-    assert response.json()["email"] == "alice.smith@booksy.com"
+    assert response.json()["email"] == "alice.smith@company.com"
 
 def test_create_user_duplicate_email(client, db_session):
     existing_user = models.User(
         first_name="Bob",
         last_name="Jones",
-        email="bob.jones@booksy.com",
+        email="bob.jones@company.com",
         password="hashedpassword",
         role=models.RoleEnum.EMPLOYEE
     )
@@ -29,7 +29,7 @@ def test_create_user_duplicate_email(client, db_session):
     payload = {
         "first_name": "Another",
         "last_name": "Bob",
-        "email": "bob.jones@booksy.com",
+        "email": "bob.jones@company.com",
         "password": "newpassword123",
         "role": "employee"
     }
@@ -51,4 +51,4 @@ def test_create_user_invalid_email_domain(client):
     response = client.post("/api/admin/users", json=payload)
     
     assert response.status_code == 422
-    assert "must use your @booksy.com email" in str(response.json())
+    assert "must use your @company.com email" in str(response.json())

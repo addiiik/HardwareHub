@@ -97,7 +97,7 @@ Ensure you have the following installed on your machine:
 2. Create a `.env` file in the `frontend` directory:
 
    ```env
-   VITE_API_URL=http://localhost:8000
+   API_URL=http://localhost:8000
    ```
 
 3. Install the JavaScript dependencies:

@@ -31,7 +31,7 @@ def client(db_session):
             pass
             
     def override_get_current_user():
-        return models.User(id="test-user-id", email="test@booksy.com", role="admin")
+        return models.User(id="test-user-id", email="test@company.com", role="admin")
 
     app.dependency_overrides[get_db] = override_get_db
     app.dependency_overrides[get_current_user] = override_get_current_user

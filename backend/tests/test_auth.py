@@ -8,7 +8,7 @@ def test_login_success(client, db_session):
     user = models.User(
         first_name="John",
         last_name="Doe",
-        email="john.doe@booksy.com",
+        email="john.doe@company.com",
         password=hashed_password,
         role=models.RoleEnum.EMPLOYEE,
         is_active=True
@@ -17,19 +17,19 @@ def test_login_success(client, db_session):
     db_session.commit()
 
     payload = {
-        "email": "john.doe@booksy.com",
+        "email": "john.doe@company.com",
         "password": "securepassword"
     }
     
     response = client.post("/api/auth/login", json=payload)
     
     assert response.status_code == 200
-    assert response.json()["email"] == "john.doe@booksy.com"
+    assert response.json()["email"] == "john.doe@company.com"
     assert "access_token" in response.cookies
 
 def test_login_invalid_credentials(client):
     payload = {
-        "email": "nonexistent@booksy.com",
+        "email": "nonexistent@company.com",
         "password": "wrongpassword"
     }
     
@@ -45,7 +45,7 @@ def test_login_deactivated_account(client, db_session):
     deactivated_user = models.User(
         first_name="Jane",
         last_name="Doe",
-        email="jane.doe@booksy.com",
+        email="jane.doe@company.com",
         password=hashed_password,
         role=models.RoleEnum.EMPLOYEE,
         is_active=False
@@ -54,7 +54,7 @@ def test_login_deactivated_account(client, db_session):
     db_session.commit()
 
     payload = {
-        "email": "jane.doe@booksy.com",
+        "email": "jane.doe@company.com",
         "password": "securepassword"
     }
     

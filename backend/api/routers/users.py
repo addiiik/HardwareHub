@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 import models
 import schemas
 from core.database import get_db
+from core.config import IS_DEMO
 from api.deps import get_current_user
 
 router = APIRouter(prefix="/api/admin/users", tags=["admin-users"])
@@ -29,6 +30,12 @@ def create_user(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user)
 ):
+    if IS_DEMO:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Manual user creation is disabled in demo mode."
+        )
+
     if current_user.role != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -66,6 +73,12 @@ def delete_user(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user)
 ):
+    if IS_DEMO:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="User deletion is disabled in demo mode."
+        )
+
     if current_user.role != "admin":
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Admin access required")
 

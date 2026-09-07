@@ -84,7 +84,7 @@ export function UserCreationForm({ onSuccess }: UserCreationFormProps) {
 
         <Field>
           <FieldLabel>Company Email</FieldLabel>
-          <Input id="email" placeholder="name@booksy.com" {...register("email")} />
+          <Input id="email" placeholder="name@company.com" {...register("email")} />
           {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
         </Field>
 

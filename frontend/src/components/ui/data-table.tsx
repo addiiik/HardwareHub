@@ -39,6 +39,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
   initialSorting?: SortingState
   actionButton?: React.ReactNode
+  getRowClassName?: (row: TData) => string
   
   enableAiSearch?: boolean
   isAiMode?: boolean
@@ -51,6 +52,7 @@ export function DataTable<TData, TValue>({
   data,
   initialSorting = [],
   actionButton,
+  getRowClassName,
   enableAiSearch = false,
   isAiMode = false,
   onAiToggle,
@@ -175,6 +177,7 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className={getRowClassName ? getRowClassName(row.original) : undefined}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
