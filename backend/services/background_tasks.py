@@ -1,8 +1,9 @@
 import re
 import time
 from core.database import SessionLocal
-from models.base_models import HardwareItem, User, Notification, RoleEnum
+from models.base_models import HardwareItem
 from services.ai_service import generate_hardware_description, get_embedding
+from services.notifications import notify_admins
 
 def startup_index_unindexed_items():
     db = SessionLocal()
@@ -11,8 +12,6 @@ def startup_index_unindexed_items():
         
         if not unindexed_items:
             return 
-
-        admins = db.query(User).filter(User.role == RoleEnum.ADMIN).all()
 
         for item in unindexed_items:
             if not item.rentable:
@@ -23,14 +22,11 @@ def startup_index_unindexed_items():
             if re.search(pattern, combined_text):
                 continue
 
-            for admin in admins:
-                start_notif = Notification(
-                    user_id=admin.id,
-                    title=f"AI Search: Started indexing {item.name}",
-                    content=f"AI Search background process has started indexing hardware item '{item.name}'.\nHardware ID: {item.id}\nSerial Number: {item.serial_number}"
-                )
-                db.add(start_notif)
-            db.commit()
+            notify_admins(
+                db,
+                title=f"AI Search: Started indexing {item.name}",
+                content=f"AI Search background process has started indexing hardware item '{item.name}'.\nHardware ID: {item.id}\nSerial Number: {item.serial_number}"
+            )
 
             try:
                 description = generate_hardware_description(item)
@@ -47,16 +43,9 @@ def startup_index_unindexed_items():
                 final_title = f"AI Search Error: Could not index {item.name}."
                 final_content = f"An error occurred while indexing '{item.name}': {str(e)}\nHardware ID: {item.id}\nSerial Number: {item.serial_number}"
 
-            for admin in admins:
-                end_notif = Notification(
-                    user_id=admin.id,
-                    title=final_title,
-                    content=final_content
-                )
-                db.add(end_notif)
+            notify_admins(db, title=final_title, content=final_content)
             
             db.commit()
-            
             time.sleep(1)
 
     except Exception as e:
@@ -76,15 +65,11 @@ def background_index_item(hardware_id: int, user_id: str):
         if re.search(pattern, combined_text):
             return
 
-        admins = db.query(User).filter(User.role == RoleEnum.ADMIN).all()
-
-        for admin in admins:
-            db.add(Notification(
-                user_id=admin.id,
-                title=f"AI Search: Started indexing {item.name}",
-                content=f"AI Search background process has started indexing hardware item '{item.name}'.\nHardware ID: {item.id}\nSerial Number: {item.serial_number}"
-            ))
-        db.commit()
+        notify_admins(
+            db,
+            title=f"AI Search: Started indexing {item.name}",
+            content=f"AI Search background process has started indexing hardware item '{item.name}'.\nHardware ID: {item.id}\nSerial Number: {item.serial_number}"
+        )
 
         try:
             description = generate_hardware_description(item)
@@ -101,26 +86,17 @@ def background_index_item(hardware_id: int, user_id: str):
             final_title = f"AI Search Error: Could not index {item.name}."
             final_content = f"An error occurred while indexing '{item.name}': {str(e)}\nHardware ID: {item.id}\nSerial Number: {item.serial_number}"
 
-        for admin in admins:
-            db.add(Notification(
-                user_id=admin.id,
-                title=final_title,
-                content=final_content
-            ))
-            
+        notify_admins(db, title=final_title, content=final_content)
         db.commit()
 
     except Exception as e:
         db.rollback()
         try:
-            admins = db.query(User).filter(User.role == RoleEnum.ADMIN).all()
-            for admin in admins:
-                db.add(Notification(
-                    user_id=admin.id,
-                    title=f"AI Search Error: Could not index item {hardware_id}.",
-                    content=f"An unexpected error occurred during background indexing: {str(e)}\nHardware ID: {hardware_id}"
-                ))
-            db.commit()
+            notify_admins(
+                db,
+                title=f"AI Search Error: Could not index item {hardware_id}.",
+                content=f"An unexpected error occurred during background indexing: {str(e)}\nHardware ID: {hardware_id}"
+            )
         except Exception:
             pass
     finally:
