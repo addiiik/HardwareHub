@@ -14,7 +14,7 @@ import { MoreHorizontal, Trash } from "lucide-react"
 import { toast } from "sonner"
 import { UserItem } from "@/types/user"
 
-const IS_DEMO = import.meta.env.IS_DEMO === "true"
+const IS_DEMO = import.meta.env.VITE_IS_DEMO === "true"
 
 export const getUserColumns = (onUserDeleted: () => void): ColumnDef<UserItem>[] => [
   { accessorKey: "first_name", header: "First Name" },

@@ -6,7 +6,7 @@ import { useAuth } from "@/context/AuthContext"
 import { LoginForm } from "@/components/login-form"
 import { DemoPane, type UserRole } from "@/components/demo-pane"
 
-const IS_DEMO = import.meta.env.IS_DEMO === "true"
+const IS_DEMO = import.meta.env.VITE_IS_DEMO === "true"
 
 export default function LoginPage() {
   const navigate = useNavigate()

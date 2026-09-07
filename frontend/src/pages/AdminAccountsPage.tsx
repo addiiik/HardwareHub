@@ -20,7 +20,7 @@ import { UserCreationForm } from "@/components/user-creation-form"
 import { getUserColumns } from "@/components/columns/user-columns"
 import { UserItem } from "@/types/user"
 
-const IS_DEMO = import.meta.env.IS_DEMO === "true"
+const IS_DEMO = import.meta.env.VITE_IS_DEMO === "true"
 
 export default function AdminAccountsPage() {
   const [data, setData] = useState<UserItem[]>([])
